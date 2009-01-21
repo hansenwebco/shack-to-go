@@ -71,7 +71,7 @@ namespace ShackToGo.Helper
       DateTime.TryParseExact(shackDate.ToString().Substring(0, shackDate.ToString().Length - 4) , "MMM dd, yyyy h:mmtt", null, System.Globalization.DateTimeStyles.None , out nodedate);
 
       //return shackDate + " " + nodedate.AddHours(userOffset).ToString();
-      return nodedate.AddHours(userOffset).ToString("M.d.yyy h:mmt");
+      return nodedate.AddHours(userOffset).ToString("M.d.yy h:mmt");
    
     }
     public static string GetPostNameCSSClass(string name)
