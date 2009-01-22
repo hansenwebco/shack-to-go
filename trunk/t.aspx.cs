@@ -14,6 +14,7 @@ public partial class t : System.Web.UI.Page
   public bool _threadedTextView = false;
   public int _timezoneOffset = 0;
   public int _currentIndent = 0;
+  public bool _jump = false;
 
   protected void Page_Load(object sender, EventArgs e)
   {
@@ -21,6 +22,9 @@ public partial class t : System.Web.UI.Page
     if (Request.QueryString["u"] != null && Request.QueryString["u"].ToString().Length > 0)
     {
       string user = Request.QueryString["u"].ToString();
+
+      if (string.IsNullOrEmpty(Request.QueryString["j"]) == false)
+        _jump = true;
 
       // check the database for this user
       using (ShackToGoDataContext dc = new ShackToGoDataContext())
@@ -137,6 +141,13 @@ public partial class t : System.Web.UI.Page
   public string DrawTextIndent()
   {
     return "".PadLeft(_currentIndent, '*') + " ";
+  }
+  public string RenderAnchor(string threadID)
+  {
+    if (Request.QueryString["i"].Equals(threadID))
+      return string.Format("<a name=\"{0}\">", threadID);
+    else
+      return "";
   }
 
 }
