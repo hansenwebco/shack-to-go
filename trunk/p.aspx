@@ -15,7 +15,9 @@
         Login:<br />
         <asp:TextBox Width="75" ID="TextBoxLogin" runat="server"></asp:TextBox><br />
         Pass:<br />
-        <asp:TextBox Width="75" ID="TextBoxPassword" TextMode="Password" runat="server"></asp:TextBox><br />
+        <asp:TextBox Width="75" ID="TextBoxPassword" TextMode="Password" runat="server"></asp:TextBox>
+        <asp:CheckBox runat="server" ID="CheckBoxRemember" Text="Save" />
+         <br />
         Post:<br />
         <asp:TextBox runat="server" ID="TextBoxPost" TextMode="MultiLine" Columns="25" Rows="5"></asp:TextBox>
         <br />
