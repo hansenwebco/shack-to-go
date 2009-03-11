@@ -25,18 +25,6 @@ public partial class _Default : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
-        if (string.IsNullOrEmpty(Request.QueryString["css"]) == false)
-        {
-            HtmlHead head = (HtmlHead)Page.Header;
-            HtmlLink link = new HtmlLink();
-            link.Attributes.Add("href", Page.ResolveClientUrl("~/white.css"));
-            link.Attributes.Add("type", "text/css");
-            link.Attributes.Add("rel", "stylesheet");
-            head.Controls.Add(link);
-
-        }
-
         string user = Request.QueryString["u"];
 
         // Get the user and then set the last database pull session variables
