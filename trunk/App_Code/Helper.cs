@@ -37,7 +37,7 @@ namespace ShackToGo.Helper
     public static string MarkThread(string id, string storyid)
     {
       if (AppendUserName("").Length > 0)
-        return String.Format("<a href=\"m.aspx?i={0}&s={1}{2}\">mark</a> ", id, storyid, AppendUserName("&"));
+        return String.Format("<a href=\"sm.aspx?i={0}&s={1}{2}\">mark</a> ", id, storyid, AppendUserName("&"));
       else
         return "";
     }
