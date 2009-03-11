@@ -1,0 +1,172 @@
+BODY
+{
+	background: #FFF;
+	color: #222222;
+	font-family: Arial;
+	font-size: smaller;
+	margin: 20px;
+}
+DIV.c
+{
+}
+INPUT, TEXTAREA
+{
+	font-size: x-small;
+}
+.a
+{
+	color: #000;
+	font-weight: bold;
+}
+IMG
+{
+	border: none;
+	/*[empty]background:;*/
+}
+.n
+{
+	color: #00BFF3;
+}
+.l A, .l
+{
+	color: #F80;
+}
+.i A, .i
+{
+	color: #09C;
+}
+.s
+{
+	background: #DDDDDD;
+	padding: 5px;
+	font-weight: bold;
+	color: black;
+}
+.p
+{
+	background: #FFFFFF;
+	border-top: 1px solid #AEAE9B;
+	padding: 4px;
+	color: white;
+}
+.nws
+{
+	border-top: 1px solid red;
+}
+.political
+{
+	border-top: 1px solid #F8A500;
+}
+.stupid
+{
+}
+FORM#form1
+{
+}
+.intresting
+{
+	border-top: 1px solid #44AEDF;
+}
+.c
+{
+	color: #222222;
+	margin-bottom: 1px;
+	background: #FFF;
+	padding: 4px;
+}
+.h
+{
+	padding: 2px;
+	background: #EFEFEF;
+	color: white;
+}
+A
+{
+	color: #222222;
+}
+.ah
+{
+	color: #EFEFEF;
+	font-weight: bold;
+}
+.jt_red
+{
+	color: #F00;
+}
+.jt_green
+{
+	color: #8DC63F;
+}
+.jt_pink
+{
+	color: #F49AC1;
+}
+.jt_olive
+{
+	color: olive;
+}
+.jt_fuchsia
+{
+	color: #C0FFC0;
+}
+.jt_yellow
+{
+	color: #FFDE00;
+}
+.jt_blue
+{
+	color: #44AEDF;
+}
+.jt_lime
+{
+	color: #C0FFC0;
+}
+.jt_orange
+{
+	color: #F7941C;
+}
+.jt_italic
+{
+	font-style: italic;
+}
+.jt_bold
+{
+	font-weight: bold;
+}
+.jt_underline
+{
+	text-decoration: underline;
+}
+.jt_strike
+{
+	text-decoration: line-through;
+}
+.jt_sample
+{
+	font-size: 80%;
+	line-height: 10px;
+}
+.jt_quote
+{
+	font-family: serif;
+	font-size: 110%;
+}
+.jt_spoiler
+{
+	cursor: help;
+	color: #383838;
+	background-color: #383838;
+	visibility: hidden;
+}
+.jt_codesmall
+{
+	font-family: monospace;
+}
+.jt_code
+{
+	display: block;
+	font-family: monospace;
+	border-left: 1px solid #666;
+	padding: 3px 0 3px 10px;
+	margin: 5px 0 5px 10px;
+}
