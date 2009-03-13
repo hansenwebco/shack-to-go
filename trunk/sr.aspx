@@ -8,7 +8,7 @@
 </head>
 <body>
     <form id="form1" enableviewstate="false" runat="server">
-    <div class="h"><a href="<%=Page.ResolveUrl("~") %><%=Helper.AppendUserName("?")%>">chatty</a> <% if (Helper.AppendUserName("").Length > 0){ %> <a href="m.aspx<%=Helper.AppendUserName("?") %>">marks</a> <%} %> <a href="sr.aspx<%=Helper.AppendUserName("?")%>">search</a>
+    <div class="h"><a href="<%=Page.ResolveUrl("~") %><%=Helper.AppendUserName("?")%>">chatty</a> <% if (Helper.AppendUserName("").Length > 0){ %> <a href="sm.aspx<%=Helper.AppendUserName("?") %>">marks</a> <%} %> <a href="sr.aspx<%=Helper.AppendUserName("?")%>">search</a>
     </div>
     
     <asp:Panel runat="server" id="PanelSearchForm">
