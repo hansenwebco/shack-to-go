@@ -86,7 +86,7 @@ public partial class p : System.Web.UI.Page
         wr.ContentType = "application/x-www-form-urlencoded";
 
         //string request = string.Format("username={0}&password={1}&body={2}", this.TextBoxLogin.Text, this.TextBoxPassword.Text, this.TextBoxPost.Text);
-        string request = string.Format("iuser={0}&ipass={1}&group={2}&parent={3}&body={4}", this.TextBoxLogin.Text, this.TextBoxPassword.Text, storyid, threadid, Server.UrlEncode(this.TextBoxPost.Text));
+        string request = string.Format("iuser={0}&ipass={1}&group={2}&parent={3}&body={4}", Server.UrlEncode(this.TextBoxLogin.Text), Server.UrlEncode( this.TextBoxPassword.Text), storyid, threadid, Server.UrlEncode(this.TextBoxPost.Text));
 
         Byte[] PostBytes = System.Text.Encoding.UTF8.GetBytes(request);
         wr.ContentLength = PostBytes.Length;

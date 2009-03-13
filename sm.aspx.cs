@@ -37,14 +37,14 @@ public partial class sm : System.Web.UI.Page
                     string result = read.ReadToEnd();
                     response.Close();
                     //Response.Write(result);
-                    
+
 
                 }
                 catch (Exception)
                 {
-                    this.LiteralError.Text = "Bookmark Add failed. There was a problem contacting ShackMarks, try again later.";                  
+                    this.LiteralError.Text = "Bookmark Add failed. There was a problem contacting ShackMarks, try again later.";
                 }
-     
+
 
             }
             if (string.IsNullOrEmpty(Request.QueryString["c"]) == false && Request.QueryString["c"] == "d") // deleteing
@@ -66,12 +66,16 @@ public partial class sm : System.Web.UI.Page
                 {
                     this.LiteralError.Text = "Bookmark Remove failed. There was a problem contacting ShackMarks, try again later.";
                 }
-             
+
             }
 
 
             String test = dc.Connection.ConnectionString;
-            _timezoneOffset = dc.ShackUsers.Where(u => u.UserName == Request.QueryString["u"]).SingleOrDefault().TimeAdjustment;
+            ShackUser su = dc.ShackUsers.Where(u => u.UserName == Request.QueryString["u"]).SingleOrDefault();
+            if (su != null)
+                _timezoneOffset = su.TimeAdjustment;
+            else
+                _timezoneOffset = 0;
 
             try
             {
@@ -84,16 +88,30 @@ public partial class sm : System.Web.UI.Page
                 doc.Load(sURL); // load the document with the writer
                 doc.WriteTo(writer);
 
-                RepeaterBookMarks.DataSource = doc.SelectNodes("comments/comment");
-                RepeaterBookMarks.DataBind();
+                if (doc.SelectNodes("comments").Count > 0)
+                {
+
+                    XmlNodeList nodes = doc.SelectNodes("comments/comment");
+
+                    RepeaterBookMarks.DataSource = doc.SelectNodes("comments/comment");
+                    RepeaterBookMarks.DataBind();
+                }
+                else
+                    this.LiteralError.Text = "You have no bookmarks";
+
+
 
                 stream = null;
                 writer = null;
                 doc = null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                this.LiteralError.Text = "There was a problem contacting ShackMarks, try again later.";   
+                //TODO: Clean this up
+                if (ex.Message == "Root element is missing.")
+                    this.LiteralError.Text = "You have no bookmarks.";
+                else
+                    this.LiteralError.Text = "There was a problem contacting ShackMarks, try again later.";
             }
 
         }
