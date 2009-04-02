@@ -13,6 +13,7 @@ using System.Xml;
 using System.Text;
 using System.IO;
 using ShackToGo.Helper;
+using System.Text.RegularExpressions;
 
 public partial class _Default : System.Web.UI.Page
 {
@@ -151,5 +152,12 @@ public partial class _Default : System.Web.UI.Page
                 sb.Append(string.Format("<a href=\"{0}?p={1}&s={2}{3}\">{4}</a>", Page.ResolveUrl("~"), i.ToString(), _storyID, Helper.AppendUserName("&"), i) + "&nbsp;");
         }
         return sb.ToString();
+    }
+    protected string DoSpoilers(string message)
+    {
+        Regex regex = new Regex("<span class=\"jt_spoiler\" onclick=\"this\\.className = '';\">(.*)</span>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+        string result = regex.Replace(message, "{ <a href=\"javascript:void(0)\" onclick=\"alert('$1')\">show spoiler</a> }");
+
+        return result;
     }
 }
