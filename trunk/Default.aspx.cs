@@ -155,9 +155,10 @@ public partial class _Default : System.Web.UI.Page
     }
     protected string DoSpoilers(string message)
     {
-        Regex regex = new Regex("<span class=\"jt_spoiler\" onclick=\"this\\.className = '';\">(.*)</span>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-        string result = regex.Replace(message, "{ <a href=\"javascript:void(0)\" onclick=\"alert('$1')\">show spoiler</a> }");
+        //Regex regex = new Regex("<span class=\"jt_spoiler\" onclick=\"this\\.className = '';\">(.*)</span>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+        //string result = regex.Replace(message, "{ <a href=\"javascript:void(0)\" onclick=\"alert('$1')\">show spoiler</a> }");
 
-        return result;
+        //return result;
+        return message;
     }
 }
