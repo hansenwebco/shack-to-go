@@ -72,8 +72,8 @@ public partial class t : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            Response.Write("OH NOES! Squeegy's Server isn't responding...or I blew something up...<br/><br/>");
-            Response.Write("ERROR: " + ex.Message);
+            Response.Write("<div id='error'>Error contacting API...<br/><br/><br/>");
+            Response.Write("ERROR: " + ex.Message + "</div>");
         }
     }
 

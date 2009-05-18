@@ -33,3 +33,4 @@ a{color:#FFF;}
 .jt_spoiler{cursor:help;color:#383838;background-color:#383838;visibility:hidden}
 .jt_codesmall{font-family:monospace}
 .jt_code{display:block;font-family:monospace;border-left:1px solid #666;padding:3px 0 3px 10px;margin:5px 0 5px 10px}
+.error { color:white }
