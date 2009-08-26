@@ -5,6 +5,8 @@ img{border:none}
 .n{color:#00BFF3}
 .l a,.l{color:#F80}
 .i a,.i{color:#09C}
+.u a,.u { color: red}
+.t a,.t { color: #77BB22}
 .s {background:#F02E01;padding:2px;color:White;}
 .p{background:#222;border-top:solid 1px #AEAE9B;padding:4px;color:White;}
 .nws{border-top:solid 1px red}
