@@ -31,7 +31,7 @@ namespace ShackToGo.Helper
         public static string RenderThomW(string id, string storyID)
         {
             if (HttpContext.Current.Request.QueryString["u"] != null && HttpContext.Current.Request.QueryString["u"].Length > 0)
-                return string.Format("<span class=\"l\"><a href=\"h.aspx?f=LOL&i={0}&s={1}{2}\">lol</a></span> <span class=\"i\"><a href=\"h.aspx?f=INF&i={3}&s={4}{5}\">inf</a></span>", id, storyID, AppendUserName("&"), id, storyID, AppendUserName("&"));
+                return string.Format("<span class=\"l\"><a href=\"h.aspx?f=LOL&i={0}&s={1}{2}\">lol</a></span> <span class=\"i\"><a href=\"h.aspx?f=INF&i={3}&s={4}{5}\">inf</a></span> <span class=\"u\"><a href=\"h.aspx?f=UNF&i={6}&s={7}{8}\">unf</a></span> <span class=\"t\"><a href=\"h.aspx?f=TAG&i={6}&s={7}{8}\">tag</a></span>", id, storyID, AppendUserName("&"), id, storyID, AppendUserName("&"), id, storyID, AppendUserName("&"), id, storyID, AppendUserName("&"));
             else
                 return "";
         }
