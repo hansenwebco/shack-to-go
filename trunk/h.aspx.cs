@@ -29,6 +29,12 @@ public partial class h : System.Web.UI.Page
                 string threadid = Request.QueryString["i"];
                 string tag = Request.QueryString["f"];
 
+                if (person.ToLower().Contains("yourusername"))
+                {
+                    this.LiteralResult.Text = "You can't LOL/INF stuff without setting your actual username dummy";
+                    return;
+                }
+
                 string sURL = String.Format("http://lmnopc.com/greasemonkey/shacklol/report.php?who={0}&what={1}&tag={2}&version=-1", person, threadid, tag);
 
                 // try and load ThomW's page!
@@ -62,6 +68,8 @@ public partial class h : System.Web.UI.Page
             {
                 this.LiteralResult.Text = "Error LOLing or INFing or TAGing or UNFing  - Internets Boo!";
             }
+
+
             this.LiteralBackToChatty.Text = string.Format("<a href=\"{0}\">back to chatty</a>", Page.ResolveUrl("~") + Helper.AppendUserName("?"));
             this.LiteralBackToThread.Text = string.Format("<a href=\"t.aspx?i={0}&s={1}{2}\">back to thread</a>", Request.QueryString["i"], Request.QueryString["s"], Helper.AppendUserName("&"));
         }
