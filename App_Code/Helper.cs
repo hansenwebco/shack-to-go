@@ -93,8 +93,15 @@ namespace ShackToGo.Helper
         /// <returns></returns>
         public static string RelinkShackURLs(string postText, string aspPage)
         {
-            postText = Regex.Replace(postText, "href=\"http://www\\.shacknews\\.com/laryn\\.x\\?id=([0-9]*)#itemanchor_([0-9]*)(.*?)\">", "href='" + VirtualPathUtility.ToAbsolute("~") + "/" + aspPage + "?i=$1" + AppendUserName("&") + "#$2'>");
-            postText = Regex.Replace(postText, "href=\"http://www\\.shacknews\\.com/laryn\\.x\\?id=([0-9]*)(.*?)\">", "href='" + VirtualPathUtility.ToAbsolute("~") + "/" + aspPage + "?i=$1" + AppendUserName("&") + "'>");
+            string path = VirtualPathUtility.ToAbsolute("~");
+            if (path.Equals(@"/"))
+                path = string.Empty;
+
+            if (path.Length > 2)
+                path = path + "/";
+
+            postText = Regex.Replace(postText, "href=\"http://www\\.shacknews\\.com/laryn\\.x\\?id=([0-9]*)#itemanchor_([0-9]*)(.*?)\">", "href='" + path  + aspPage + "?i=$1" + AppendUserName("&") + "#$2'>");
+            postText = Regex.Replace(postText, "href=\"http://www\\.shacknews\\.com/laryn\\.x\\?id=([0-9]*)(.*?)\">", "href='" + path +   aspPage + "?i=$1" + AppendUserName("&") + "'>");
             postText = Regex.Replace(postText, "target=\"_blank\"", "");
 
             return postText;
