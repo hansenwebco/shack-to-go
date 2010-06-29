@@ -144,12 +144,12 @@ public partial class _Default : System.Web.UI.Page
     protected string DrawPages(int pages)
     {
         StringBuilder sb = new StringBuilder();
-        for (int i = 1; i < pages; i++)
+        for (int i = 0; i < pages; i++)
         {
-            if ((Request.QueryString["p"] == null && i == 1) || Request.QueryString["p"] == i.ToString())
-                sb.Append(i.ToString() + "&nbsp;");
+            if ((Request.QueryString["p"] == null && i+1 == 1) || Request.QueryString["p"] == (i+1).ToString())
+                sb.Append((i+1).ToString() + "&nbsp;");
             else
-                sb.Append(string.Format("<a href=\"{0}?p={1}&s={2}{3}\">{4}</a>", Page.ResolveUrl("~"), i.ToString(), _storyID, Helper.AppendUserName("&"), i) + "&nbsp;");
+                sb.Append(string.Format("<a href=\"{0}?p={1}&s={2}{3}\">{4}</a>", Page.ResolveUrl("~"), (i+1).ToString(), _storyID, Helper.AppendUserName("&"), i+1) + "&nbsp;");
         }
         return sb.ToString();
     }
