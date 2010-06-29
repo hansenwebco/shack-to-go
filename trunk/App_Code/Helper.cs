@@ -69,7 +69,7 @@ namespace ShackToGo.Helper
         public static string AdjustforTimeZone(string shackDate, int userOffset)
         {
             DateTime nodedate;
-            DateTime.TryParseExact(shackDate.ToString().Substring(0, shackDate.ToString().Length - 4), "MMM dd, yyyy h:mmtt", null, System.Globalization.DateTimeStyles.None, out nodedate);
+            DateTime.TryParseExact(shackDate.ToString(), "ddd MMM dd hh:mm:00 -0700 yyyy", null, System.Globalization.DateTimeStyles.None, out nodedate);
 
             //return shackDate + " " + nodedate.AddHours(userOffset).ToString();
             return nodedate.AddHours(userOffset).ToString("M.d.yy h:mmt");
