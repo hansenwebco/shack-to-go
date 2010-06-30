@@ -71,7 +71,7 @@ namespace ShackToGo.Helper
             TimeZone tz = TimeZone.CurrentTimeZone;
 
             DateTime nodedate;
-            DateTime.TryParseExact(shackDate.ToString(), "ddd MMM dd hh:mm:00 -0700 yyyy", null, System.Globalization.DateTimeStyles.None, out nodedate);
+            DateTime.TryParseExact(shackDate.ToString(), "ddd MMM dd HH:mm:00 -0700 yyyy", null, System.Globalization.DateTimeStyles.None, out nodedate);
 
             //return shackDate + " " + nodedate.AddHours(userOffset).ToString();
 
