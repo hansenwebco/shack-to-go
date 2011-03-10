@@ -12,6 +12,8 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Net;
 using ShackToGo.Helper;
+using System.Collections.Specialized;
+using System.Text;
 
 public partial class p : System.Web.UI.Page
 {
@@ -42,8 +44,8 @@ public partial class p : System.Web.UI.Page
     }
     protected void ButtonSubmit_Click(object sender, EventArgs e)
     {
-        
-  
+
+
 
         if (CheckBoxRemember.Checked == true)
             Response.Cookies["savepass"].Value = TextBoxPassword.Text;
@@ -60,19 +62,19 @@ public partial class p : System.Web.UI.Page
         if (threadid != null && storyid != null)
         { // reply to thread
             //postURL = String.Format("http://shackchatty.com/create/{0}/{1}.xml", storyid, threadid);
-            postURL = String.Format("http://www.shacknews.com/extras/post_laryn_iphone.x");
+            //postURL = String.Format("http://www.shacknews.com/extras/post_laryn_iphone.x");
 
             this.LiteralChattyURL.Text = string.Format("<a href=\"{0}{1}\">Back to Chatty</a>", ResolveUrl("~"), Helper.AppendUserName("?"));
             this.LiteralThreadURL.Text = string.Format("<a href=\"t.aspx?i={0}&s={1}{2}\">Back to Thread</a>", topThreadId, storyid, Helper.AppendUserName("&"));
-            wr = WebRequest.Create(postURL);
+            //wr = WebRequest.Create(postURL);
         }
         else if (storyid != null)
         {
             //postURL = String.Format("http://shackchatty.com/create/{0}.xml", storyid);
-            postURL = String.Format("http://www.shacknews.com/extras/post_laryn_iphone.x");
+            //postURL = String.Format("http://www.shacknews.com/extras/post_laryn_iphone.x");
             this.LiteralChattyURL.Text = string.Format("<a href=\"{0}{1}\">Back to Chatty</a>", ResolveUrl("~"), Helper.AppendUserName("?"));
 
-            wr = WebRequest.Create(postURL);
+            //wr = WebRequest.Create(postURL);
         }
         else
         {
@@ -82,30 +84,65 @@ public partial class p : System.Web.UI.Page
         }
 
 
-        wr.Method = "POST";
-        wr.ContentType = "application/x-www-form-urlencoded";
+        WebClientExtended client = new WebClientExtended();
+        CookieContainer cc = new CookieContainer();
+        client.Method = "POST";
+        client.Headers["User-Agent"] = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 3.5.30729; .NET4.0E)";
 
-        //string request = string.Format("username={0}&password={1}&body={2}", this.TextBoxLogin.Text, this.TextBoxPassword.Text, this.TextBoxPost.Text);
-        string request = string.Format("iuser={0}&ipass={1}&group={2}&parent={3}&body={4}", Server.UrlEncode(this.TextBoxLogin.Text), Server.UrlEncode( this.TextBoxPassword.Text), storyid, threadid, Server.UrlEncode(this.TextBoxPost.Text));
 
-        Byte[] PostBytes = System.Text.Encoding.UTF8.GetBytes(request);
-        wr.ContentLength = PostBytes.Length;
+        // login to the shack news site using credentials
+        try
+        {
+            NameValueCollection c = new NameValueCollection();
+            c.Add("email", this.TextBoxLogin.Text);
+            c.Add("password", this.TextBoxPassword.Text);
+            c.Add("login", "login");
+            client.Cookies = cc;
+            string urlCookie = "http://www.shacknews.com/";
+            Byte[] webResponse = client.UploadValues(urlCookie, "POST", c);
+            String result = Encoding.UTF8.GetString(webResponse);
 
-        System.IO.Stream stream = wr.GetRequestStream();
-        stream.Write(PostBytes, 0, PostBytes.Length);
-        stream.Close();
-
-        PanelPostForm.Visible = false;
-        this.LiteralChattyURL.Visible = true;
-        this.LiteralThreadURL.Visible = true;
+            if (!result.Contains("<li class=\"user light\">"))
+            {
+                LiteralPostResult.Text = "Post Failed, check your login and password.";
+                return;
+            }
+        }
+        catch (Exception)
+        {
+            LiteralPostResult.Text = "There was a problem with logging in to ShackNews.";
+            return;
+        }
 
         try
         {
-            WebResponse resp = wr.GetResponse();
-            System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
 
-            //LiteralPostResult.Text = sr.ReadToEnd().ToString().Trim();
-            string result = sr.ReadToEnd().ToString().Trim();
+            //<input type="hidden" value="" id="parent_id" name="parent_id">
+            //<input type="hidden" value="17" id="content_type_id" name="content_type_id">
+            //<input type="hidden" id="content_id" name="content_id" value="17">
+            //<input type="hidden" value="" id="page" name="page">
+            //<input type="hidden" value="/chatty" id="parent_url" name="parent_url">
+            //<textarea onkeydown="" onblur="typing=false" onfocus="typing=true;" id="frm_body" name="body"></textarea>
+
+            NameValueCollection post = new NameValueCollection();
+            if (int.Parse(threadid) <= 0)
+                post.Add("parent_id", ""); // empty for new post
+            else
+                post.Add("parent_id", threadid); // empty for new post
+
+            post.Add("content_type_id", "17"); // 17 is latest chatty
+            post.Add("content_id", "17"); // posts to main chatty
+            post.Add("page", ""); // don't really need this
+            post.Add("parent_url", "/chatty"); // don't really need this either
+            post.Add("body", Server.HtmlEncode(TextBoxPost.Text));
+
+            string urlPost = "http://www.shacknews.com/post_chatty.x";
+            Byte[] postResponse = client.UploadValues(urlPost, "POST", post);
+            string result = Encoding.UTF8.GetString(postResponse);
+
+            PanelPostForm.Visible = false;
+            this.LiteralChattyURL.Visible = true;
+            this.LiteralThreadURL.Visible = true;
 
             // Shack sends back a <script> with a bunch of script.. so.. we look for error messages.. eh...
             if (result.Contains("You must be logged in to post") == true)
@@ -113,7 +150,7 @@ public partial class p : System.Web.UI.Page
                 this.LiteralPostResult.Text = "Login failed, please check your username and password.<br/><br/>";
                 this.PanelPostForm.Visible = true;
             }
-            else if (result.Contains("Please post something with more than 5 characters.") == true)
+            else if (result.Contains("post something at least 5 characters long") == true)
             {
                 this.LiteralPostResult.Text = "Please post something with more than 5 characters.<br/><br/>";
                 this.PanelPostForm.Visible = true;
@@ -129,11 +166,67 @@ public partial class p : System.Web.UI.Page
                 this.PanelPostForm.Visible = false;
             }
 
+
         }
         catch (Exception)
         {
-            LiteralPostResult.Text = "Post Failed, check your login and password.";
+
+            Response.Write("error_communication_send");
+            return;
         }
+
+        //wr.Method = "POST";
+        //wr.ContentType = "application/x-www-form-urlencoded";
+
+        ////string request = string.Format("username={0}&password={1}&body={2}", this.TextBoxLogin.Text, this.TextBoxPassword.Text, this.TextBoxPost.Text);
+        //string request = string.Format("iuser={0}&ipass={1}&group={2}&parent={3}&body={4}", Server.UrlEncode(this.TextBoxLogin.Text), Server.UrlEncode( this.TextBoxPassword.Text), storyid, threadid, Server.UrlEncode(this.TextBoxPost.Text));
+
+        //Byte[] PostBytes = System.Text.Encoding.UTF8.GetBytes(request);
+        //wr.ContentLength = PostBytes.Length;
+
+        //System.IO.Stream stream = wr.GetRequestStream();
+        //stream.Write(PostBytes, 0, PostBytes.Length);
+        //stream.Close();
+
+        //PanelPostForm.Visible = false;
+        //this.LiteralChattyURL.Visible = true;
+        //this.LiteralThreadURL.Visible = true;
+
+        //try
+        //{
+        //    WebResponse resp = wr.GetResponse();
+        //    System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
+
+        //    //LiteralPostResult.Text = sr.ReadToEnd().ToString().Trim();
+        //    string result = sr.ReadToEnd().ToString().Trim();
+
+        //    // Shack sends back a <script> with a bunch of script.. so.. we look for error messages.. eh...
+        //    if (result.Contains("You must be logged in to post") == true)
+        //    {
+        //        this.LiteralPostResult.Text = "Login failed, please check your username and password.<br/><br/>";
+        //        this.PanelPostForm.Visible = true;
+        //    }
+        //    else if (result.Contains("Please post something with more than 5 characters.") == true)
+        //    {
+        //        this.LiteralPostResult.Text = "Please post something with more than 5 characters.<br/><br/>";
+        //        this.PanelPostForm.Visible = true;
+        //    }
+        //    else if (result.Contains("Please wait a few minutes before trying to post again.") == true)
+        //    {
+        //        this.LiteralPostResult.Text = "Please wait a few minutes before trying to post again.<br/><br/>";
+        //        this.PanelPostForm.Visible = true;
+        //    }
+        //    else
+        //    {
+        //        this.LiteralPostResult.Text = "Post Successful.<br><br>";
+        //        this.PanelPostForm.Visible = false;
+        //    }
+
+        //}
+        //catch (Exception)
+        //{
+        //    LiteralPostResult.Text = "Post Failed, check your login and password.";
+        //}
 
 
     }
