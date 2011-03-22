@@ -125,7 +125,10 @@ public partial class p : System.Web.UI.Page
             //<textarea onkeydown="" onblur="typing=false" onfocus="typing=true;" id="frm_body" name="body"></textarea>
 
             NameValueCollection post = new NameValueCollection();
-            if (int.Parse(threadid) <= 0)
+
+            int tid = 0;
+            int.TryParse(threadid, out tid);
+            if (tid <= 0)
                 post.Add("parent_id", ""); // empty for new post
             else
                 post.Add("parent_id", threadid); // empty for new post
