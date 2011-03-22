@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 
 /// <summary>
@@ -70,13 +71,14 @@ namespace ShackToGo.Helper
         {
             TimeZone tz = TimeZone.CurrentTimeZone;
 
-            DateTime nodedate;
-            DateTime.TryParseExact(shackDate.ToString(), "ddd MMM dd HH:mm:00 -0700 yyyy", null, System.Globalization.DateTimeStyles.None, out nodedate);
+            shackDate = shackDate.Replace(" PDT", "");
+
+            DateTime nodedate = DateTime.ParseExact(shackDate, "MMM dd, yyyy h:mmtt", CultureInfo.InvariantCulture);
 
             //return shackDate + " " + nodedate.AddHours(userOffset).ToString();
 
             if (tz.IsDaylightSavingTime(DateTime.Now) == true)
-               nodedate =nodedate.AddHours(1);
+                nodedate = nodedate.AddHours(1);
 
             return nodedate.AddHours(userOffset).ToString("M.d.yy h:mmt");
 
@@ -106,8 +108,8 @@ namespace ShackToGo.Helper
             if (path.Length > 2)
                 path = path + "/";
 
-            postText = Regex.Replace(postText, "href=\"http://www\\.shacknews\\.com/laryn\\.x\\?id=([0-9]*)#itemanchor_([0-9]*)(.*?)\">", "href='" + path  + aspPage + "?i=$1" + AppendUserName("&") + "#$2'>");
-            postText = Regex.Replace(postText, "href=\"http://www\\.shacknews\\.com/laryn\\.x\\?id=([0-9]*)(.*?)\">", "href='" + path +   aspPage + "?i=$1" + AppendUserName("&") + "'>");
+            postText = Regex.Replace(postText, "href=\"http://www\\.shacknews\\.com/laryn\\.x\\?id=([0-9]*)#itemanchor_([0-9]*)(.*?)\">", "href='" + path + aspPage + "?i=$1" + AppendUserName("&") + "#$2'>");
+            postText = Regex.Replace(postText, "href=\"http://www\\.shacknews\\.com/laryn\\.x\\?id=([0-9]*)(.*?)\">", "href='" + path + aspPage + "?i=$1" + AppendUserName("&") + "'>");
             postText = Regex.Replace(postText, "target=\"_blank\"", "");
 
             return postText;
