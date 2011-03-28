@@ -137,7 +137,7 @@ public partial class p : System.Web.UI.Page
             post.Add("content_id", "17"); // posts to main chatty
             post.Add("page", ""); // don't really need this
             post.Add("parent_url", "/chatty"); // don't really need this either
-            post.Add("body", Server.HtmlEncode(TextBoxPost.Text));
+            post.Add("body", TextBoxPost.Text.Trim());
 
             string urlPost = "http://www.shacknews.com/post_chatty.x";
             Byte[] postResponse = client.UploadValues(urlPost, "POST", post);
