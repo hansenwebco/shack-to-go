@@ -72,6 +72,7 @@ namespace ShackToGo.Helper
             TimeZone tz = TimeZone.CurrentTimeZone;
 
             shackDate = shackDate.Replace(" PDT", "");
+            shackDate = shackDate.Replace(" UTC", "");
 
             DateTime nodedate = DateTime.ParseExact(shackDate, "MMM dd, yyyy h:mmtt", CultureInfo.InvariantCulture);
 
